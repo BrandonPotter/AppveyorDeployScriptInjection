@@ -42,7 +42,7 @@ foreach ($file in $csprojFiles) {
     if ($targetBeforeBuildNodes.Count -eq 0) {
         # add the node
         Write-Host "Adding Target BeforeBuild node to project node..."
-        $targetNode = $xmlFile.CreateElement("Target")
+        $targetNode = $xmlFile.CreateElement("Target", $xmlFile.DocumentElement.NamespaceURI)
         $targetNode.SetAttribute("Name", "BeforeBuild")
         $projNode.AppendChild($targetNode)
     } else {
@@ -55,7 +55,7 @@ foreach ($file in $csprojFiles) {
 
     if ($itemGroupNodes.Count -eq 0) {
         Write-Host "Adding ItemGroup node to Target BeforeBuild node..."
-        $itemGroupNode = $xmlFile.CreateElement("ItemGroup")
+        $itemGroupNode = $xmlFile.CreateElement("ItemGroup", $xmlFile.DocumentElement.NamespaceURI)
         $targetNode.AppendChild($itemGroupNode)
     } else {
         $itemGroupNode = $itemGroupNodes[0]
@@ -65,7 +65,7 @@ foreach ($file in $csprojFiles) {
     $contentNode = $itemGroupNode.SelectSingleNode('*[local-name()="Content" and @Include="deploy.ps1"]')
     if ($contentNode -eq $null) {
         Write-Host "Adding Content Include deploy.ps1 node to ItemGroup node..."
-        $contentNode = $xmlFile.CreateElement("Content")
+        $contentNode = $xmlFile.CreateElement("Content", $xmlFile.DocumentElement.NamespaceURI)
         $itemGroupNode.AppendChild($contentNode)
         $contentNode.SetAttribute("Include", "deploy.ps1")
         $xmlFile.Save($file.FullName)    
