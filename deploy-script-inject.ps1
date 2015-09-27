@@ -29,7 +29,7 @@ foreach ($file in $csprojFiles) {
         Write-Host "deploy.ps1 already exists, not adding"
     } else {
         Write-Host "Writing deploy.cs1 to $deployPath"
-        Out-File $deployPath $deployScriptContents
+        $deployScriptContents | Out-File $deployPath
     }
 
     $targetBeforeBuildNodes = $projNode.SelectNodes('*[local-name()="Target" and @Name="BeforeBuild"]')
